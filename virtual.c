@@ -116,7 +116,6 @@ static int serve(struct PTE table[TABLEMAX], int *size, int page, int pool[POOLM
     entry->last_access_timestamp = now;
     entry->reference_count = 1;
 
-    push_frame(pool, count, freed);
     return entry->frame_number;
 }
 
