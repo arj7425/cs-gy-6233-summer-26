@@ -29,8 +29,13 @@ struct PCB handle_process_arrival_pp(struct PCB ready_queue[QUEUEMAX], int *queu
     }
 
     if (*queue_cnt < QUEUEMAX) {
+        int elapsed = timestamp - current_process.execution_starttime;
+        int remaining = current_process.remaining_bursttime - elapsed;
+        if (remaining < 0) {
+            remaining = 0;
+        }
         current_process.execution_endtime = 0;
-        current_process.remaining_bursttime = current_process.remaining_bursttime;
+        current_process.remaining_bursttime = remaining;
         ready_queue[*queue_cnt] = current_process;
         (*queue_cnt)++;
     }
@@ -86,9 +91,14 @@ struct PCB handle_process_arrival_srtp(struct PCB ready_queue[QUEUEMAX], int *qu
     }
 
     if (*queue_cnt < QUEUEMAX) {
+        int elapsed = timestamp - current_process.execution_starttime;
+        int remaining = current_process.remaining_bursttime - elapsed;
+        if (remaining < 0) {
+            remaining = 0;
+        }
         current_process.execution_starttime = 0;
         current_process.execution_endtime = 0;
-        current_process.remaining_bursttime = current_process.remaining_bursttime;
+        current_process.remaining_bursttime = remaining;
         ready_queue[*queue_cnt] = current_process;
         (*queue_cnt)++;
     }
