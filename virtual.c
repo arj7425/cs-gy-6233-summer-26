@@ -134,8 +134,8 @@ int count_page_faults_fifo(struct PTE page_table[TABLEMAX], int table_cnt, int r
     for (int i = 0; i < reference_cnt; ++i) {
         int page = refrence_string[i];
         int was_present = work[page].is_valid;
-        int frame = process_page_access_fifo(work, &table_cnt, page, pool, &count, i + 1);
-        if (frame >= 0 && !was_present) faults++;
+        process_page_access_fifo(work, &table_cnt, page, pool, &count, i + 1);
+        if (!was_present) faults++;
     }
     return faults;
 }
@@ -155,8 +155,8 @@ int count_page_faults_lru(struct PTE page_table[TABLEMAX], int table_cnt, int re
     for (int i = 0; i < reference_cnt; ++i) {
         int page = refrence_string[i];
         int was_present = work[page].is_valid;
-        int frame = process_page_access_lru(work, &table_cnt, page, pool, &count, i + 1);
-        if (frame >= 0 && !was_present) faults++;
+        process_page_access_lru(work, &table_cnt, page, pool, &count, i + 1);
+        if (!was_present) faults++;
     }
     return faults;
 }
@@ -176,8 +176,8 @@ int count_page_faults_lfu(struct PTE page_table[TABLEMAX], int table_cnt, int re
     for (int i = 0; i < reference_cnt; ++i) {
         int page = refrence_string[i];
         int was_present = work[page].is_valid;
-        int frame = process_page_access_lfu(work, &table_cnt, page, pool, &count, i + 1);
-        if (frame >= 0 && !was_present) faults++;
+        process_page_access_lfu(work, &table_cnt, page, pool, &count, i + 1);
+        if (!was_present) faults++;
     }
     return faults;
 }
