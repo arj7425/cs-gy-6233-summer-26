@@ -35,6 +35,7 @@ struct MEMORY_BLOCK best_fit_allocate(int request_size, struct MEMORY_BLOCK memo
     }
 
     struct MEMORY_BLOCK block = memory_map[best_index];
+    struct MEMORY_BLOCK original_block = block;
     if (block.segment_size == request_size) {
         block.process_id = process_id;
         memory_map[best_index] = block;
@@ -49,8 +50,8 @@ struct MEMORY_BLOCK best_fit_allocate(int request_size, struct MEMORY_BLOCK memo
     struct MEMORY_BLOCK remainder;
     memset(&remainder, 0, sizeof(remainder));
     remainder.start_address = block.end_address + 1;
-    remainder.end_address = memory_map[best_index].end_address;
-    remainder.segment_size = memory_map[best_index].segment_size - request_size;
+    remainder.end_address = original_block.end_address;
+    remainder.segment_size = original_block.segment_size - request_size;
     remainder.process_id = 0;
 
     if (remainder.segment_size > 0) {
@@ -80,6 +81,7 @@ struct MEMORY_BLOCK first_fit_allocate(int request_size, struct MEMORY_BLOCK mem
     }
 
     struct MEMORY_BLOCK block = memory_map[best_index];
+    struct MEMORY_BLOCK original_block = block;
     if (block.segment_size == request_size) {
         block.process_id = process_id;
         memory_map[best_index] = block;
@@ -94,8 +96,8 @@ struct MEMORY_BLOCK first_fit_allocate(int request_size, struct MEMORY_BLOCK mem
     struct MEMORY_BLOCK remainder;
     memset(&remainder, 0, sizeof(remainder));
     remainder.start_address = block.end_address + 1;
-    remainder.end_address = memory_map[best_index].end_address;
-    remainder.segment_size = memory_map[best_index].segment_size - request_size;
+    remainder.end_address = original_block.end_address;
+    remainder.segment_size = original_block.segment_size - request_size;
     remainder.process_id = 0;
 
     if (remainder.segment_size > 0) {
@@ -130,6 +132,7 @@ struct MEMORY_BLOCK worst_fit_allocate(int request_size, struct MEMORY_BLOCK mem
     }
 
     struct MEMORY_BLOCK block = memory_map[best_index];
+    struct MEMORY_BLOCK original_block = block;
     if (block.segment_size == request_size) {
         block.process_id = process_id;
         memory_map[best_index] = block;
@@ -144,8 +147,8 @@ struct MEMORY_BLOCK worst_fit_allocate(int request_size, struct MEMORY_BLOCK mem
     struct MEMORY_BLOCK remainder;
     memset(&remainder, 0, sizeof(remainder));
     remainder.start_address = block.end_address + 1;
-    remainder.end_address = memory_map[best_index].end_address;
-    remainder.segment_size = memory_map[best_index].segment_size - request_size;
+    remainder.end_address = original_block.end_address;
+    remainder.segment_size = original_block.segment_size - request_size;
     remainder.process_id = 0;
 
     if (remainder.segment_size > 0) {
@@ -172,6 +175,7 @@ struct MEMORY_BLOCK next_fit_allocate(int request_size, struct MEMORY_BLOCK memo
         int i = (start_index + offset) % *map_cnt;
         if (memory_map[i].process_id == 0 && memory_map[i].segment_size >= request_size) {
             struct MEMORY_BLOCK block = memory_map[i];
+            struct MEMORY_BLOCK original_block = block;
             if (block.segment_size == request_size) {
                 block.process_id = process_id;
                 memory_map[i] = block;
@@ -186,8 +190,8 @@ struct MEMORY_BLOCK next_fit_allocate(int request_size, struct MEMORY_BLOCK memo
             struct MEMORY_BLOCK remainder;
             memset(&remainder, 0, sizeof(remainder));
             remainder.start_address = block.end_address + 1;
-            remainder.end_address = memory_map[i].end_address;
-            remainder.segment_size = memory_map[i].segment_size - request_size;
+            remainder.end_address = original_block.end_address;
+            remainder.segment_size = original_block.segment_size - request_size;
             remainder.process_id = 0;
 
             if (remainder.segment_size > 0) {
